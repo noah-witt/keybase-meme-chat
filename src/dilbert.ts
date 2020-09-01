@@ -25,11 +25,9 @@ export async function sendDate(message: MsgSummary, date: string) {
 }
 
 async function sendDilbert(message: MsgSummary, response: dilbert.dilbertComic) {
-    const msg1 = bot.chat.send(message.conversationId, {body:`Dilbert: ${response.title}, ${response.date}\n${response.url}`});
     const { path, cleanup} = await tmp.dir({unsafeCleanup: true});
     await dl.image({url: response.url, dest:`${path}/${response.title}-${response.date}.gif`});
-    await msg1;
-    await bot.chat.attach(message.conversationId, `${path}/${response.title}-${response.date}.gif`);
+    await bot.chat.attach(message.conversationId, `${path}/${response.title}-${response.date}.gif`, {title: `Dilbert: ${response.title}, ${response.date}`});
     cleanup();
     return;
 }
@@ -47,8 +45,7 @@ export async function sendSubscribed() {
     await dl.image({url: newest.url, dest:`${path}/${newest.title}-${newest.date}.gif`});
     let subs = await dbQuery;
     for(let i=0; i< subs.length; i++) {
-        await bot.chat.send(subs[i].conversationId, {body: `Dilbert: ${newest.title}, ${newest.date}\n${newest.url}`});
-        await bot.chat.attach(subs[i].conversationId, `${path}/${newest.title}-${newest.date}.gif`);
+        await bot.chat.attach(subs[i].conversationId, `${path}/${newest.title}-${newest.date}.gif`, {title: `Dilbert: ${newest.title}, ${newest.date}`});
     }
     cleanup();
 }

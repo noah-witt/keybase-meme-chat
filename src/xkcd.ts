@@ -41,11 +41,9 @@ export async function sendNum(message: MsgSummary, num: number) {
 }
 
 async function send(message: MsgSummary, target: xkcdInfoJson) {
-    const msg1 = bot.chat.send(message.conversationId, {body: `XKCD ${target.num}: ${target.title}`});
     const { path, cleanup} = await tmp.dir({unsafeCleanup: true});
     await dl.image({url: target.img, dest:`${path}/XKCD_${target.num}_${target.safe_title}.png`});
-    await msg1;
-    await bot.chat.attach(message.conversationId, `${path}/XKCD_${target.num}_${target.safe_title}.png`);
+    await bot.chat.attach(message.conversationId, `${path}/XKCD_${target.num}_${target.safe_title}.png`,  {title: `XKCD ${target.num}: ${target.title}`});
     cleanup();
 }
 
@@ -62,8 +60,7 @@ export async function sendSubscribed() {
     await dl.image({url: newest.img, dest:`${path}/XKCD_${newest.num}_${newest.safe_title}.png`});
     let subs = await dbQuery;
     for(let i=0; i< subs.length; i++) {
-        await bot.chat.send(subs[i].conversationId, {body: `XKCD ${newest.num}: ${newest.title}`});
-        await bot.chat.attach(subs[i].conversationId, `${path}/XKCD_${newest.num}_${newest.safe_title}.png`);
+        await bot.chat.attach(subs[i].conversationId, `${path}/XKCD_${newest.num}_${newest.safe_title}.png`, {title: `XKCD ${newest.num}: ${newest.title}`});
     }
     cleanup();
 }

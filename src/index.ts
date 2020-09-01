@@ -12,9 +12,70 @@ async function init() {
     await bot.init(process.env.keybaseName, process.env.keybasePaperKey, {verbose: false});
     console.log(`Your bot is initialized. It is logged in as ${bot.myInfo().username}`);
     looper();
+    bot.chat.advertiseCommands({
+        advertisements: [
+            {
+                type: 'public',
+                commands: [
+                    {
+                        name: 'xkcd',
+                        description: 'sends random xkcd',
+                        usage: 'xkcd',
+                    },
+                    {
+                        name: 'xkcd latest',
+                        description: 'sends latest xkcd',
+                        usage: 'xkcd latest',
+                    },
+                    {
+                        name: 'xkcd ##',
+                        description: 'sends xkcd with num. replace ####',
+                        usage: 'xkcd [0-9]+',
+                    },
+                    {
+                        name: 'dilbert',
+                        description: 'sends random dilbert',
+                        usage: 'dilbert',
+                    },
+                    {
+                        name: 'dilbert latest',
+                        description: 'sends latest dilbert',
+                        usage: 'dilbert latest',
+                    },
+                    {
+                        name: 'dilbert ##',
+                        description: 'sends dilbert with num. replace ####',
+                        usage: 'dilbert [0-9]{4}-[0-9]{2}-[0-9]{2}',
+                    },
+                    {
+                        name: 'subscribe dilbert',
+                        description: 'subscribes to dilbert',
+                        usage: 'subscribe dilbert',
+                    },
+                    {
+                        name: 'subscribe xkcd',
+                        description: 'subscribes to xkcd',
+                        usage: 'subscribe xkcd',
+                    },
+                    {
+                        name: 'unsubscribe dilbert',
+                        description: 'unsubscribes to dilbert',
+                        usage: 'unsubscribe dilbert',
+                    },
+                    {
+                        name: 'unsubscribe xkcd',
+                        description: 'unsubscribes to xkcd',
+                        usage: 'unsubscribe xkcd',
+                    },
+                ]
+            }
+        ]
+    });
     bot.chat.watchAllChannelsForNewMessages(async (message) => {
         try {
             if(message.content.type!='text') return;
+
+            if(message.content.text.body.charAt(0)=='!') message.content.text.body = message.content.text.body.substr(1);
 
             //dilbert
             if(message.content.text.body.trim()=='dilbert') {
@@ -69,7 +130,7 @@ async function init() {
     });
 }
 
-const looperRateMinute: number = 1;
+const looperRateMinute: number = 60;
 async function looper(){
     xkcd.sendSubscribed();
     dilbert.sendSubscribed();
