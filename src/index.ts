@@ -130,7 +130,7 @@ async function init() {
     });
 }
 
-const looperRateMinute: number = 60;
+const looperRateMinute: number = Number.parseInt(process.env.looper);
 async function looper(){
     xkcd.sendSubscribed();
     dilbert.sendSubscribed();
