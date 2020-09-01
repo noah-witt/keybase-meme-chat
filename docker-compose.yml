@@ -13,7 +13,6 @@ services:
     build: .
     image: docker.pkg.github.com/noah-witt/keybase-meme-chat/srv:0.0.1
     restart: always
-    ports:
     env_file:
       - example.env
       - .env
