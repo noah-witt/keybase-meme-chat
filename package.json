@@ -29,6 +29,7 @@
     "dot-env": "0.0.1",
     "image-downloader": "^4.0.1",
     "keybase-bot": "^3.6.1",
+    "moment-timezone": "^0.5.31",
     "mongoose": "^5.10.2",
     "tiny-json-http": "^7.2.2",
     "tmp-promise": "^3.0.2",

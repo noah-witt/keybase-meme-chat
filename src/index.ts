@@ -4,6 +4,7 @@ import Bot from 'keybase-bot';
 import * as dilbert from './dilbert';
 import * as xkcd from './xkcd';
 import * as db from './db';
+import moment from 'moment-timezone';
 const bot = new Bot();
 dilbert.setBot(bot);
 xkcd.setBot(bot);
@@ -134,6 +135,8 @@ const looperRateMinute: number = Number.parseInt(process.env.looper);
 async function looper(){
     xkcd.sendSubscribed();
     dilbert.sendSubscribed();
+    const targetTime = moment().add(looperRateMinute*60*1000, 'millisecond');
+    console.log(`next wakeup: ${targetTime.toISOString()}`);
     setTimeout(looper, looperRateMinute*60*1000);
 }
 

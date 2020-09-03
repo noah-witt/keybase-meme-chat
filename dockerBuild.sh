@@ -4,7 +4,7 @@ npm install -g typescript
 tsc
 rm ./*.env
 apt-get update
-apt-get upgrade -y
+#apt-get upgrade -y
 curl --remote-name https://prerelease.keybase.io/keybase_amd64.deb
 apt-get install -y ./keybase_amd64.deb
 apt-get install -y sudo
